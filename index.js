@@ -3,6 +3,9 @@ const app = express();
 const path = require("path");
 
 app.use(express.static(path.join(__dirname, "dist")));
+
+
+
 app.use(express.json());
 
 let notes = [
@@ -23,6 +26,7 @@ let notes = [
   },
 ];
 
+
 const requestLogger = (request, response, next) => {
   console.log("Method:", request.method);
   console.log("Path:  ", request.path);
@@ -35,6 +39,7 @@ const unknownEndpoint = (req, res) => {
 };
 app.use(unknownEndpoint);
 app.use(requestLogger);
+
 
 const generateId = () => {
   const maxId =
