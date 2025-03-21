@@ -1,7 +1,10 @@
 const express = require("express");
 const app = express();
-const cors = require("cors");
-app.use(cors());
+const path = require("path");
+
+app.use(express.static(path.join(__dirname, "dist")));
+
+
 
 app.use(express.json());
 
@@ -22,6 +25,21 @@ let notes = [
     important: true,
   },
 ];
+
+
+const requestLogger = (request, response, next) => {
+  console.log("Method:", request.method);
+  console.log("Path:  ", request.path);
+  console.log("Body:  ", request.body);
+  console.log("---");
+  next();
+};
+const unknownEndpoint = (req, res) => {
+  res.status(404).send({ error: "unknown endpoint" });
+};
+app.use(unknownEndpoint);
+app.use(requestLogger);
+
 
 const generateId = () => {
   const maxId =
