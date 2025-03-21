@@ -25,6 +25,19 @@ let notes = [
   },
 ];
 
+const requestLogger = (request, response, next) => {
+  console.log("Method:", request.method);
+  console.log("Path:  ", request.path);
+  console.log("Body:  ", request.body);
+  console.log("---");
+  next();
+};
+const unknownEndpoint = (req, res) => {
+  res.status(404).send({ error: "unknown endpoint" });
+};
+app.use(unknownEndpoint);
+app.use(requestLogger);
+
 const generateId = () => {
   const maxId =
     notes.length > 0 ? Math.max(...notes.map((n) => Number(n.id))) : 0;
